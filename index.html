@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📐 Proportional Parts of Triangles - رياضيات 11 عام | Mr. Mohammed Hesham</title>
+<meta name="description" content="امتحان تفاعلي عن حل مسائل تطبيقية على تناسب أجزاء المثلث - رياضيات صف 11 عام">
+<meta name="author" content="Mr. Mohammed Hesham">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%); }
+body.en-mode { font-family: 'Inter', sans-serif; direction: ltr; }
+.arabic-math { font-family: 'Amiri', 'Cairo', serif; }
+.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+.incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+.timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.7; } }
+@media print { .no-print { display: none !important; } }
+.success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+.grade-excellent { background: #dcfce7; color: #166534; }
+.grade-good { background: #fef3c7; color: #92400e; }
+.grade-pass { background: #dbeafe; color: #1e40af; }
+.grade-fail { background: #fee2e2; color: #991b1b; }
+.lang-switch { position: fixed; top: 16px; left: 16px; z-index: 100; background: white; padding: 6px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px; border: 2px solid #0891b2; }
+body.en-mode .lang-switch { left: auto; right: 16px; }
+.lang-btn { padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; border: none; font-size: 0.875rem; background: transparent; color: #6b7280; }
+.lang-btn.active { background: #0891b2; color: white; }
+.shuffle-badge { display: inline-block; background: linear-gradient(135deg, #0891b2, #0e7490); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-right: 8px; }
+body.en-mode .shuffle-badge { margin-right: 0; margin-left: 8px; }
+.math-display { display: inline-block; direction: ltr; font-family: 'Amiri', serif; font-size: 1.15em; padding: 2px 8px; background: #cffafe; border-radius: 4px; margin: 2px; color: #155e75; font-weight: 700; }
+.save-indicator { position: fixed; bottom: 20px; left: 20px; z-index: 200; background: #10b981; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+body.en-mode .save-indicator { left: auto; right: 20px; }
+.save-indicator.show { opacity: 1; }
+.formula-box { background: #cffafe; border: 2px solid #0891b2; border-radius: 8px; padding: 12px; margin: 10px 0; text-align: center; }
+.svg-graph { display: block; margin: 12px auto; background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 8px; max-width: 100%; }
+.graph-container { text-align: center; margin: 10px 0; }
+.module-badge { display: inline-block; padding: 4px 16px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px; }
+.module-1 { background: #cffafe; color: #155e75; }
+.module-2 { background: #dbeafe; color: #1e40af; }
+.module-3 { background: #fce7f3; color: #9f1239; }
+.module-4 { background: #ecfdf5; color: #065f46; }
+.module-5 { background: #ede9fe; color: #5b21b6; }
+.module-6 { background: #fef3c7; color: #92400e; }
+</style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+<div class="lang-switch no-print">
+<button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+<button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+</div>
+
+<div id="saveIndicator" class="save-indicator">💾 <span data-ar="تم الحفظ" data-en="Saved">تم الحفظ</span></div>
+
+<div id="timer-container" class="max-w-5xl mx-auto mb-4 text-center no-print">
+<div class="bg-white p-4 rounded-2xl shadow-lg inline-block border-2 border-cyan-100">
+<span class="text-gray-600 ml-2">⏰ <span data-ar="الوقت المتبقي:" data-en="Time Left:">الوقت المتبقي:</span></span>
+<span id="timer" class="text-2xl font-bold text-cyan-700 font-mono">45:00</span>
+<span class="shuffle-badge">📐 <span data-ar="تناسب أجزاء المثلث" data-en="Proportional Triangle Parts">تناسب أجزاء المثلث</span> - 30 <span data-ar="سؤال" data-en="Questions">سؤال</span></span>
+</div>
+</div>
+
+<div class="max-w-5xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
+<button onclick="toggleAnswers()" class="bg-cyan-700 hover:bg-cyan-800 text-white px-5 py-2 rounded-xl font-medium transition shadow">👀 <span data-ar="إظهار/إخفاء الإجابات" data-en="Show/Hide Answers">إظهار/إخفاء الإجابات</span></button>
+<button onclick="window.print()" class="bg-gray-700 hover:bg-gray-900 text-white px-5 py-2 rounded-xl font-medium transition shadow">🖨️ <span data-ar="طباعة" data-en="Print">طباعة</span></button>
+<button onclick="reshuffleExam()" class="bg-gradient-to-r from-cyan-700 to-teal-600 hover:from-cyan-800 hover:to-teal-700 text-white px-5 py-2 rounded-xl font-medium transition shadow">🔄 <span data-ar="أسئلة جديدة" data-en="New Questions">أسئلة جديدة</span></button>
+<button onclick="clearProgress()" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-medium transition shadow">🗑️ <span data-ar="مسح التقدم" data-en="Clear Progress">مسح التقدم</span></button>
+</div>
+
+<header class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mb-8 border-4 border-cyan-500">
+<div class="text-center">
+<div class="inline-block bg-cyan-700 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">MATH GRADE 11 GENERAL - QUESTION 6</div>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">📐 <span data-ar="حل مسائل تطبيقية على تناسب أجزاء المثلث" data-en="Applied Problems on Proportional Parts of Triangles">حل مسائل تطبيقية على تناسب أجزاء المثلث</span></h1>
+<h2 class="text-xl text-cyan-700 font-semibold mb-2"><span data-ar="الوحدة 1 - الدرس 1-4: المستقيمات المتوازية والأجزاء المتناسبة | ص 41 (26 - 27)" data-en="Unit 1 - Lesson 1-4: Parallel Lines & Proportional Parts | Page 41 (26-27)">الوحدة 1 - الدرس 1-4: المستقيمات المتوازية والأجزاء المتناسبة | ص 41 (26 - 27)</span></h2>
+<p class="text-gray-600 mb-4"><span data-ar="جد قيمة x و y في الشكل: القطع المتوازية تقطع أجزاء متطابقة أو متناسبة" data-en="Find x and y: parallel lines cut congruent or proportional parts">جد قيمة x و y في الشكل: القطع المتوازية تقطع أجزاء متطابقة أو متناسبة</span></p>
+<p class="text-sm text-green-600 font-semibold">💾 <span data-ar="يتم حفظ تقدمك تلقائياً - 30 سؤالاً في 6 أقسام" data-en="Auto-saved - 30 questions in 6 sections">يتم حفظ تقدمك تلقائياً - 30 سؤالاً في 6 أقسام</span></p>
+</div>
+<div class="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+<span>📅 <span data-ar="التاريخ:" data-en="Date:">التاريخ:</span> <input type="text" id="examDate" class="border-b-2 border-cyan-300 bg-transparent w-32 text-center"></span>
+<span>😊 <span data-ar="الاسم:" data-en="Name:">الاسم:</span> <input type="text" id="studentName" class="border-b-2 border-cyan-300 bg-transparent w-40 text-center" data-placeholder-ar="اكتب اسمك" data-placeholder-en="Your name" placeholder="اكتب اسمك"></span>
+<span>🏫 <span data-ar="الشعبة:" data-en="Class:">الشعبة:</span> <input type="text" id="studentClass" class="border-b-2 border-cyan-300 bg-transparent w-32 text-center" data-placeholder-ar="الشعبة" data-placeholder-en="Class" placeholder="الشعبة"></span>
+<span>⏰ <span data-ar="المدة: 45 دقيقة" data-en="Duration: 45 min">المدة: 45 دقيقة</span></span>
+<span>📊 <span data-ar="المجموع: 100 درجة" data-en="Total: 100 points">المجموع: 100 درجة</span></span>
+</div>
+</header>
+
+<div class="max-w-5xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-lg border-2 border-cyan-200 no-print">
+<h3 class="font-bold text-lg mb-3 text-cyan-800 text-center">📐 <span data-ar="النظريات الأساسية" data-en="Key Theorems">النظريات الأساسية</span></h3>
+<div class="grid md:grid-cols-3 gap-3 text-sm">
+<div class="formula-box"><strong><span data-ar="الأجزاء المتطابقة:" data-en="Congruent Parts:">الأجزاء المتطابقة:</span></strong><br><span data-ar="إذا قطعت المتوازيات أجزاءً متطابقة على قاطع، فهي تقطع كذلك على كل قاطع" data-en="If parallels cut congruent parts on one transversal, they do on all">إذا قطعت المتوازيات أجزاءً متطابقة على قاطع، فهي تقطع كذلك على كل قاطع</span></div>
+<div class="formula-box"><strong><span data-ar="التناسب:" data-en="Proportionality:">التناسب:</span></strong><br><span class="math-display">a/b = c/d</span><br><span data-ar="المتوازيات تقطع القواطع بنسب متساوية" data-en="Parallels cut transversals in equal ratios">المتوازيات تقطع القواطع بنسب متساوية</span></div>
+<div class="formula-box"><strong><span data-ar="قطعة المنتصف:" data-en="Midsegment:">قطعة المنتصف:</span></strong><br><span class="math-display">DE = ½ BC</span><br><span data-ar="توازي الضلع الثالث وتساوي نصفه" data-en="Parallel to 3rd side & half of it">توازي الضلع الثالث وتساوي نصفه</span></div>
+</div>
+<div id="method-holder" class="mt-2"></div>
+</div>
+
+<main class="max-w-5xl mx-auto space-y-8" id="exam-content"></main>
+
+<div class="text-center no-print pb-8 mt-8">
+<button onclick="gradeExam()" class="bg-gradient-to-r from-cyan-700 to-teal-600 hover:from-cyan-800 hover:to-teal-700 text-white text-lg px-12 py-4 rounded-2xl font-bold shadow-xl transition transform hover:scale-105">🎯 <span data-ar="صحح إجاباتي!" data-en="Grade My Exam!">صحح إجاباتي!</span></button>
+</div>
+
+<div id="results-panel" class="max-w-5xl mx-auto mt-8 bg-white p-8 rounded-3xl shadow-2xl border-4 border-cyan-500 hidden no-print">
+<h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">🏆 <span data-ar="نتيجتك يا بطل!" data-en="Your Result, Champion!">نتيجتك يا بطل!</span> 🏆</h2>
+<div class="grid md:grid-cols-3 gap-4 mb-6">
+<div class="bg-cyan-50 p-4 rounded-xl text-center"><p>😊 <span data-ar="الاسم" data-en="Name">الاسم</span></p><p id="res-name" class="font-bold text-xl text-cyan-700">-</p></div>
+<div class="bg-teal-50 p-4 rounded-xl text-center"><p>📅 <span data-ar="التاريخ" data-en="Date">التاريخ</span></p><p id="res-date" class="font-bold text-xl text-teal-700">-</p></div>
+<div class="bg-cyan-50 p-4 rounded-xl text-center"><p>🌟 <span data-ar="المجموع" data-en="Total">المجموع</span></p><p id="res-total" class="font-bold text-3xl text-cyan-700">0 / 100</p></div>
+</div>
+<div class="text-center mb-6">
+<span id="success-badge" class="success-badge grade-excellent">-</span>
+<p id="success-percent" class="text-4xl font-bold text-cyan-700 mt-2">0%</p>
+<p class="text-sm text-gray-500"><span data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</span></p>
+</div>
+<div class="bg-gray-50 p-6 rounded-xl mb-6">
+<h3 class="font-bold text-lg mb-4 text-gray-800">📊 <span data-ar="أداؤك في كل قسم:" data-en="Your Performance by Section:">أداؤك في كل قسم:</span></h3>
+<div class="space-y-3" id="sections-performance"></div>
+</div>
+<div class="text-center">
+<button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-cyan-700 to-teal-600 text-white text-lg px-8 py-3 rounded-2xl font-bold shadow-xl transition">📧 <span data-ar="أرسل النتيجة للمعلم" data-en="Send Result to Teacher">أرسل النتيجة للمعلم</span></button>
+<p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
+</div>
+</div>
+
+<footer class="max-w-5xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+© Proportional Parts of Triangles - Grade 11 General | Mr. Mohammed Hesham 📐
+</footer>
+
+<script>
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+emailjs.init(PUBLIC_KEY);
+
+const STORAGE_KEY = 'proportional_parts_g11_v1';
+const TOTAL_TIME = 2700;
+const TOTAL_QUESTIONS = 30;
+const TOTAL_SECTIONS = 6;
+const QUESTIONS_PER_SECTION = 5;
+
+let currentSeed = null, answersVisible = false, saveIndicatorTimeout = null;
+let currentLang = 'ar', timeRemaining = TOTAL_TIME, timerInterval;
+let examData, correctAnswersMap = {}, rng = null;
+
+function mulberry32(a){return function(){var t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function showSaveIndicator(){const i=document.getElementById('saveIndicator');i.classList.add('show');if(saveIndicatorTimeout)clearTimeout(saveIndicatorTimeout);saveIndicatorTimeout=setTimeout(()=>i.classList.remove('show'),1500)}
+function saveState(s=true){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({seed:currentSeed,lang:currentLang,studentName:document.getElementById('studentName').value,studentClass:document.getElementById('studentClass').value,examDate:document.getElementById('examDate').value,answers:getSelectedAnswers(),timeRemaining:timeRemaining,answersVisible:answersVisible,savedAt:Date.now()}));if(s)showSaveIndicator()}catch(e){console.error(e)}}
+function loadState(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):null}catch(e){return null}}
+function getSelectedAnswers(){const a={};for(let i=0;i<TOTAL_QUESTIONS;i++){const s=document.querySelector('input[name="q'+i+'"]:checked');if(s)a[i]=s.value}return a}
+function restoreAnswers(a){if(!a)return;for(const[i,v]of Object.entries(a)){const r=document.querySelector('input[name="q'+i+'"][value="'+v+'"]');if(r)r.checked=true}}
+function clearProgress(){if(confirm(currentLang==='ar'?'⚠️ هل أنت متأكد من مسح كل التقدم؟':'⚠️ Clear all progress?')){localStorage.removeItem(STORAGE_KEY);location.reload()}}
+function setupAnswerListeners(){document.getElementById('exam-content').addEventListener('change',e=>{if(e.target.type==='radio')saveState()})}
+function setupInputListeners(){['studentName','studentClass','examDate'].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',()=>saveState(false));el.addEventListener('blur',()=>saveState())}})}
+
+// ==================== SVG GENERATORS ====================
+function noteBox(n1, n2){ return '<rect x="25" y="238" width="430" height="42" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>'
+ + '<text x="240" y="255" text-anchor="middle" font-size="10.5" fill="#92400e" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + n1 + '</text>'
+ + '<text x="240" y="272" text-anchor="middle" font-size="10.5" fill="#166534" font-weight="bold">' + n2 + '</text>'; }
+
+function triCutFig(id, title, lu, ll, ru, rl, n1, n2){
+  return '<svg class="svg-graph" width="480" height="290" viewBox="0 0 480 290" xmlns="http://www.w3.org/2000/svg">'
+  + '<rect x="5" y="5" width="470" height="280" rx="12" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>'
+  + '<text x="240" y="26" text-anchor="middle" font-size="13" fill="#155e75" font-weight="bold">' + title + '</text>'
+  + '<polygon points="100,60 380,60 240,230" fill="#a5f3fc" fill-opacity="0.25" stroke="#0e7490" stroke-width="2.5"/>'
+  + '<line x1="170" y1="145" x2="310" y2="145" stroke="#dc2626" stroke-width="2.5"/>'
+  + '<line x1="128" y1="56" x2="128" y2="64" stroke="#16a34a" stroke-width="2.5"/><line x1="203" y1="183" x2="209" y2="191" stroke="#16a34a" stroke-width="2.5"/>'
+  + '<line x1="349" y1="98" x2="355" y2="106" stroke="#16a34a" stroke-width="2"/><line x1="346" y1="102" x2="352" y2="110" stroke="#16a34a" stroke-width="2"/>'
+  + '<line x1="272" y1="183" x2="278" y2="191" stroke="#16a34a" stroke-width="2"/><line x1="269" y1="187" x2="275" y2="195" stroke="#16a34a" stroke-width="2"/>'
+  + '<text x="112" y="100" font-size="11" fill="#1e40af" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + lu + '</text>'
+  + '<text x="196" y="205" font-size="11" fill="#1e40af" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + ll + '</text>'
+  + '<text x="352" y="100" font-size="11" fill="#be185d" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + ru + '</text>'
+  + '<text x="282" y="205" font-size="11" fill="#be185d" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + rl + '</text>'
+  + noteBox(n1, n2) + '</svg>';
+}
+
+function threeLinesFig(id, title, lu, ll, ru, rl, n1, n2){
+  return '<svg class="svg-graph" width="480" height="290" viewBox="0 0 480 290" xmlns="http://www.w3.org/2000/svg">'
+  + '<rect x="5" y="5" width="470" height="280" rx="12" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>'
+  + '<text x="240" y="26" text-anchor="middle" font-size="13" fill="#155e75" font-weight="bold">' + title + '</text>'
+  + '<g stroke="#0e7490" stroke-width="2.5"><line x1="60" y1="70" x2="420" y2="70"/><line x1="60" y1="140" x2="420" y2="140"/><line x1="60" y1="210" x2="420" y2="210"/></g>'
+  + '<line x1="150" y1="40" x2="190" y2="240" stroke="#db2777" stroke-width="2.5"/>'
+  + '<line x1="300" y1="40" x2="340" y2="240" stroke="#7c3aed" stroke-width="2.5"/>'
+  + '<line x1="160" y1="101" x2="168" y2="109" stroke="#16a34a" stroke-width="2.5"/><line x1="174" y1="171" x2="182" y2="179" stroke="#16a34a" stroke-width="2.5"/>'
+  + '<line x1="310" y1="101" x2="318" y2="109" stroke="#16a34a" stroke-width="2"/><line x1="307" y1="105" x2="315" y2="113" stroke="#16a34a" stroke-width="2"/><line x1="324" y1="171" x2="332" y2="179" stroke="#16a34a" stroke-width="2"/><line x1="321" y1="175" x2="329" y2="183" stroke="#16a34a" stroke-width="2"/>'
+  + '<text x="98" y="108" font-size="11" fill="#be185d" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + lu + '</text>'
+  + '<text x="104" y="178" font-size="11" fill="#be185d" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + ll + '</text>'
+  + '<text x="352" y="108" font-size="11" fill="#6d28d9" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + ru + '</text>'
+  + '<text x="358" y="178" font-size="11" fill="#6d28d9" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + rl + '</text>'
+  + noteBox(n1, n2) + '</svg>';
+}
+
+function propFig(id, title, a, b, c, d, eq, res){
+  return '<svg class="svg-graph" width="480" height="280" viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">'
+  + '<rect x="5" y="5" width="470" height="270" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>'
+  + '<text x="240" y="26" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="bold">' + title + '</text>'
+  + '<g stroke="#1d4ed8" stroke-width="2.5"><line x1="60" y1="70" x2="420" y2="70"/><line x1="60" y1="140" x2="420" y2="140"/><line x1="60" y1="210" x2="420" y2="210"/></g>'
+  + '<line x1="150" y1="40" x2="190" y2="240" stroke="#db2777" stroke-width="2.5"/>'
+  + '<line x1="300" y1="40" x2="340" y2="240" stroke="#059669" stroke-width="2.5"/>'
+  + '<text x="112" y="108" font-size="12" fill="#be185d" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + a + '</text>'
+  + '<text x="118" y="178" font-size="12" fill="#be185d" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + b + '</text>'
+  + '<text x="352" y="108" font-size="12" fill="#047857" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + c + '</text>'
+  + '<text x="358" y="178" font-size="12" fill="#047857" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + d + '</text>'
+  + '<rect x="60" y="228" width="360" height="40" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>'
+  + '<text x="240" y="245" text-anchor="middle" font-size="11" fill="#166534" font-family="' + "'Amiri'" + ',serif" font-weight="bold">' + eq + '</text>'
+  + '<text x="240" y="262" text-anchor="middle" font-size="11" fill="#166534" font-weight="bold">' + res + '</text>'
+  + '</svg>';
+}
+
+const svgGraphs = {
+theorem_fig: `<svg class="svg-graph" width="480" height="250" viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="240" rx="12" fill="#cffafe" stroke="#0891b2" stroke-width="2"/>
+<text x="240" y="26" text-anchor="middle" font-size="13" fill="#155e75" font-weight="bold">📐 نظرية: المتوازيات والأجزاء المتطابقة</text>
+<g stroke="#0e7490" stroke-width="3"><line x1="50" y1="70" x2="430" y2="70"/><line x1="50" y1="130" x2="430" y2="130"/><line x1="50" y1="190" x2="430" y2="190"/></g>
+<text x="440" y="74" font-size="10" fill="#0e7490">ℓ₁</text><text x="440" y="134" font-size="10" fill="#0e7490">ℓ₂</text><text x="440" y="194" font-size="10" fill="#0e7490">ℓ₃</text>
+<line x1="120" y1="45" x2="160" y2="215" stroke="#db2777" stroke-width="2.5"/>
+<line x1="290" y1="45" x2="350" y2="215" stroke="#7c3aed" stroke-width="2.5"/>
+<line x1="131" y1="96" x2="141" y2="104" stroke="#16a34a" stroke-width="3"/><line x1="145" y1="156" x2="155" y2="164" stroke="#16a34a" stroke-width="3"/>
+<line x1="311" y1="96" x2="321" y2="104" stroke="#16a34a" stroke-width="2.5"/><line x1="308" y1="100" x2="318" y2="108" stroke="#16a34a" stroke-width="2.5"/><line x1="332" y1="156" x2="342" y2="164" stroke="#16a34a" stroke-width="2.5"/><line x1="329" y1="160" x2="339" y2="168" stroke="#16a34a" stroke-width="2.5"/>
+<text x="95" y="105" font-size="11" fill="#be185d" font-weight="bold">a</text><text x="109" y="165" font-size="11" fill="#be185d" font-weight="bold">a</text>
+<text x="285" y="105" font-size="11" fill="#6d28d9" font-weight="bold">b</text><text x="306" y="165" font-size="11" fill="#6d28d9" font-weight="bold">b</text>
+<rect x="40" y="205" width="400" height="34" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="240" y="227" text-anchor="middle" font-size="11" fill="#166534" font-weight="bold">التطابق على قاطع واحد ⇒ التطابق على كل القواطع</text>
+</svg>`,
+
+midseg_fig: `<svg class="svg-graph" width="480" height="250" viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="240" rx="12" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+<text x="240" y="26" text-anchor="middle" font-size="13" fill="#9f1239" font-weight="bold">📐 قطعة المنتصف = نصف الضلع المقابل</text>
+<polygon points="90,55 50,205 390,205" fill="#fbcfe8" fill-opacity="0.3" stroke="#db2777" stroke-width="2.5"/>
+<line x1="70" y1="130" x2="240" y2="130" stroke="#0891b2" stroke-width="3" stroke-dasharray="7,4"/>
+<circle cx="70" cy="130" r="4" fill="#dc2626"/><circle cx="240" cy="130" r="4" fill="#dc2626"/>
+<text x="92" y="48" font-size="12" fill="#db2777" font-weight="bold">A</text>
+<text x="38" y="220" font-size="12" fill="#db2777" font-weight="bold">B</text>
+<text x="398" y="220" font-size="12" fill="#db2777" font-weight="bold">C</text>
+<text x="58" y="122" font-size="11" fill="#dc2626" font-weight="bold">D</text>
+<text x="248" y="122" font-size="11" fill="#dc2626" font-weight="bold">E</text>
+<text x="150" y="120" text-anchor="middle" font-size="11" fill="#0e7490" font-family="'Amiri',serif" font-weight="bold">DE = 2x + 1</text>
+<text x="220" y="222" text-anchor="middle" font-size="11" fill="#0e7490" font-family="'Amiri',serif" font-weight="bold">BC = 3x + 9</text>
+<rect x="60" y="232" width="360" height="0" rx="0" fill="none"/>
+<text x="240" y="245" text-anchor="middle" font-size="10.5" fill="#166534" font-weight="bold">2(2x+1) = 3x+9 ⇒ x = 7</text>
+</svg>`,
+
+midpoint_bisect: `<svg class="svg-graph" width="480" height="250" viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="240" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="240" y="26" text-anchor="middle" font-size="13" fill="#065f46" font-weight="bold">📐 مستقيم عبر المنتصف موازٍ لضلع ⇒ ينصّف الثالث</text>
+<polygon points="90,55 60,205 330,205" fill="#d1fae5" fill-opacity="0.4" stroke="#059669" stroke-width="2.5"/>
+<circle cx="75" cy="130" r="4" fill="#dc2626"/>
+<line x1="75" y1="130" x2="210" y2="130" stroke="#7c3aed" stroke-width="3"/>
+<line x1="205" y1="98" x2="215" y2="106" stroke="#16a34a" stroke-width="2.5"/><line x1="212" y1="158" x2="222" y2="166" stroke="#16a34a" stroke-width="2.5"/>
+<text x="92" y="48" font-size="12" fill="#059669" font-weight="bold">A</text>
+<text x="48" y="220" font-size="12" fill="#059669" font-weight="bold">B</text>
+<text x="338" y="220" font-size="12" fill="#059669" font-weight="bold">C</text>
+<text x="228" y="100" font-size="11" fill="#065f46" font-family="'Amiri',serif" font-weight="bold">3x - 4</text>
+<text x="235" y="170" font-size="11" fill="#065f46" font-family="'Amiri',serif" font-weight="bold">x + 8</text>
+<text x="60" y="122" font-size="10" fill="#dc2626" font-weight="bold">منتصف</text>
+<rect x="60" y="228" width="360" height="0" rx="0" fill="none"/>
+<text x="240" y="245" text-anchor="middle" font-size="10.5" fill="#166534" font-weight="bold">3x - 4 = x + 8 ⇒ x = 6</text>
+</svg>`,
+
+fig26: triCutFig('f26', 'التمرين 26: القطعة الموازية تقطع أجزاءً متطابقة', '(1/5)x + 3', '4x - 35', '2y + 1', '5y - 8', '2y + 1 = 5y - 8  ⇒  9 = 3y  ⇒  y = 3', '(1/5)x + 3 = 4x - 35  ⇒  38 = (19/5)x  ⇒  x = 10'),
+fig27: threeLinesFig('f27', 'التمرين 27: ثلاثة متوازيات وقاطعان', '(1/4)x + 5', '(1/2)x - 7', '(1/3)y - 6', '66 - (2/3)y', '(1/3)y - 6 = 66 - (2/3)y  ⇒  y = 72', '(1/4)x + 5 = (1/2)x - 7  ⇒  12 = (1/4)x  ⇒  x = 48')
+};
+
+// ==================== EXAM DATA ====================
+const originalExamData = {
+sections: [
+{ id:'s1', title:{ar:'🔹 القسم 1: أجزاء متطابقة — جد x و y (مثل 26، 27) (Q1-Q5)',en:'🔹 Section 1: Congruent Parts — Find x & y (like 26, 27) (Q1-Q5)'}, questions:[
+{ q:{ar:'<strong>السؤال 1 (تمرين 26):</strong> جد قيمة x وقيمة y في الشكل (القطعة المستقيمية الموازية تقطع أجزاءً متطابقة).',en:'<strong>Q1 (Ex. 26):</strong> Find x and y in the figure (the parallel segment cuts congruent parts).'},
+  svg: svgGraphs.fig26,
+  options:[{ar:'<span class="math-display">x = 10 , y = 3</span>',en:'<span class="math-display">x = 10 , y = 3</span>'},{ar:'<span class="math-display">x = 3 , y = 10</span>',en:'<span class="math-display">x = 3 , y = 10</span>'},{ar:'<span class="math-display">x = 8 , y = 3</span>',en:'<span class="math-display">x = 8 , y = 3</span>'},{ar:'<span class="math-display">x = 10 , y = 7/3</span>',en:'<span class="math-display">x = 10 , y = 7/3</span>'}],
+  correct:0, answer:{ar:'2y+1 = 5y-8 ⇒ 9 = 3y ⇒ y = 3 ؛ (1/5)x+3 = 4x-35 ⇒ 38 = (19/5)x ⇒ x = 10',en:'2y+1=5y-8 ⇒ y=3; (1/5)x+3=4x-35 ⇒ x=10'} },
+{ q:{ar:'<strong>السؤال 2 (تمرين 27):</strong> جد قيمة x وقيمة y في الشكل (الأجزاء على كل قاطع متطابقة).',en:'<strong>Q2 (Ex. 27):</strong> Find x and y in the figure (parts on each transversal are congruent).'},
+  svg: svgGraphs.fig27,
+  options:[{ar:'<span class="math-display">x = 24 , y = 72</span>',en:'<span class="math-display">x = 24 , y = 72</span>'},{ar:'<span class="math-display">x = 48 , y = 60</span>',en:'<span class="math-display">x = 48 , y = 60</span>'},{ar:'<span class="math-display">x = 48 , y = 72</span>',en:'<span class="math-display">x = 48 , y = 72</span>'},{ar:'<span class="math-display">x = 12 , y = 36</span>',en:'<span class="math-display">x = 12 , y = 36</span>'}],
+  correct:2, answer:{ar:'(1/3)y - 6 = 66 - (2/3)y ⇒ y = 72 ؛ (1/4)x + 5 = (1/2)x - 7 ⇒ 12 = (1/4)x ⇒ x = 48',en:'(1/3)y-6 = 66-(2/3)y ⇒ y=72; (1/4)x+5 = (1/2)x-7 ⇒ x=48'} },
+{ q:{ar:'<strong>السؤال 3:</strong> في شكل مماثل: <span class="math-display">(1/2)x + 4 = x - 6</span> و <span class="math-display">3y - 5 = y + 9</span>. جد x و y.',en:'<strong>Q3:</strong> Similar figure: <span class="math-display">(1/2)x + 4 = x - 6</span> and <span class="math-display">3y - 5 = y + 9</span>. Find x, y.'},
+  options:[{ar:'<span class="math-display">x = 20 , y = 7</span>',en:'<span class="math-display">x = 20 , y = 7</span>'},{ar:'<span class="math-display">x = 7 , y = 20</span>',en:'<span class="math-display">x = 7 , y = 20</span>'},{ar:'<span class="math-display">x = 10 , y = 7</span>',en:'<span class="math-display">x = 10 , y = 7</span>'},{ar:'<span class="math-display">x = 20 , y = 14</span>',en:'<span class="math-display">x = 20 , y = 14</span>'}],
+  correct:0, answer:{ar:'10 = (1/2)x ⇒ x = 20 ؛ 2y = 14 ⇒ y = 7',en:'10 = x/2 ⇒ x=20; 2y=14 ⇒ y=7'} },
+{ q:{ar:'<strong>السؤال 4:</strong> في شكل مماثل: <span class="math-display">(1/3)x + 8 = (2/3)x - 4</span> و <span class="math-display">4y + 2 = 6y - 10</span>. جد x و y.',en:'<strong>Q4:</strong> Similar figure: <span class="math-display">(1/3)x + 8 = (2/3)x - 4</span> and <span class="math-display">4y + 2 = 6y - 10</span>. Find x, y.'},
+  options:[{ar:'<span class="math-display">x = 6 , y = 36</span>',en:'<span class="math-display">x = 6 , y = 36</span>'},{ar:'<span class="math-display">x = 36 , y = 6</span>',en:'<span class="math-display">x = 36 , y = 6</span>'},{ar:'<span class="math-display">x = 24 , y = 6</span>',en:'<span class="math-display">x = 24 , y = 6</span>'},{ar:'<span class="math-display">x = 36 , y = 3</span>',en:'<span class="math-display">x = 36 , y = 3</span>'}],
+  correct:1, answer:{ar:'12 = (1/3)x ⇒ x = 36 ؛ 12 = 2y ⇒ y = 6',en:'12 = x/3 ⇒ x=36; 12=2y ⇒ y=6'} },
+{ q:{ar:'<strong>السؤال 5:</strong> في شكل مماثل: <span class="math-display">0.25x + 10 = 0.75x - 20</span> و <span class="math-display">5y - 3 = 2y + 12</span>. جد x و y.',en:'<strong>Q5:</strong> Similar figure: <span class="math-display">0.25x + 10 = 0.75x - 20</span> and <span class="math-display">5y - 3 = 2y + 12</span>. Find x, y.'},
+  options:[{ar:'<span class="math-display">x = 5 , y = 60</span>',en:'<span class="math-display">x = 5 , y = 60</span>'},{ar:'<span class="math-display">x = 30 , y = 15</span>',en:'<span class="math-display">x = 30 , y = 15</span>'},{ar:'<span class="math-display">x = 60 , y = 5</span>',en:'<span class="math-display">x = 60 , y = 5</span>'},{ar:'<span class="math-display">x = 15 , y = 5</span>',en:'<span class="math-display">x = 15 , y = 5</span>'}],
+  correct:2, answer:{ar:'30 = 0.5x ⇒ x = 60 ؛ 3y = 15 ⇒ y = 5',en:'30 = 0.5x ⇒ x=60; 3y=15 ⇒ y=5'} }
+]},
+{ id:'s2', title:{ar:'🔹 القسم 2: التناسب بين القواطع (Q6-Q10)',en:'🔹 Section 2: Proportionality Between Transversals (Q6-Q10)'}, questions:[
+{ q:{ar:'<strong>السؤال 6:</strong> ثلاثة متوازيات تقطع قاطعاً بأجزاء 2 و 3، وتقطع قاطعاً آخر بأجزاء x و 6. جد x.',en:'<strong>Q6:</strong> Three parallels cut one transversal into 2 and 3, and another into x and 6. Find x.'},
+  svg: propFig('p6','ثلاثة متوازيات وقاطعان: النسب متساوية','2','3','x','6','2/3 = x/6  ⇒  3x = 12','x = 4'),
+  options:[{ar:'<span class="math-display">9</span>',en:'<span class="math-display">9</span>'},{ar:'<span class="math-display">4</span>',en:'<span class="math-display">4</span>'},{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'}],
+  correct:1, answer:{ar:'2/3 = x/6 ⇒ 3x = 12 ⇒ x = 4',en:'2/3 = x/6 ⇒ x = 4'} },
+{ q:{ar:'<strong>السؤال 7:</strong> المتوازيات تقطع قاطعاً بأجزاء 4 و 6، وآخر بأجزاء x و 9. جد x.',en:'<strong>Q7:</strong> Parallels cut one transversal into 4 and 6, another into x and 9. Find x.'},
+  options:[{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">4</span>',en:'<span class="math-display">4</span>'},{ar:'<span class="math-display">9</span>',en:'<span class="math-display">9</span>'},{ar:'<span class="math-display">13.5</span>',en:'<span class="math-display">13.5</span>'}],
+  correct:0, answer:{ar:'4/6 = x/9 ⇒ 6x = 36 ⇒ x = 6',en:'4/6 = x/9 ⇒ x = 6'} },
+{ q:{ar:'<strong>السؤال 8:</strong> المتوازيات تقطع قاطعاً بأجزاء 5 و 10، وآخر بأجزاء y و 8. جد y.',en:'<strong>Q8:</strong> Parallels cut one transversal into 5 and 10, another into y and 8. Find y.'},
+  options:[{ar:'<span class="math-display">16</span>',en:'<span class="math-display">16</span>'},{ar:'<span class="math-display">2</span>',en:'<span class="math-display">2</span>'},{ar:'<span class="math-display">4</span>',en:'<span class="math-display">4</span>'},{ar:'<span class="math-display">10</span>',en:'<span class="math-display">10</span>'}],
+  correct:2, answer:{ar:'5/10 = y/8 ⇒ 10y = 40 ⇒ y = 4',en:'5/10 = y/8 ⇒ y = 4'} },
+{ q:{ar:'<strong>السؤال 9:</strong> المتوازيات تقطع قاطعاً بأجزاء (x-2) و 6، وآخر بأجزاء 4 و 8. جد x.',en:'<strong>Q9:</strong> Parallels cut one transversal into (x-2) and 6, another into 4 and 8. Find x.'},
+  options:[{ar:'<span class="math-display">3</span>',en:'<span class="math-display">3</span>'},{ar:'<span class="math-display">7</span>',en:'<span class="math-display">7</span>'},{ar:'<span class="math-display">14</span>',en:'<span class="math-display">14</span>'},{ar:'<span class="math-display">5</span>',en:'<span class="math-display">5</span>'}],
+  correct:3, answer:{ar:'(x-2)/6 = 4/8 = 1/2 ⇒ x - 2 = 3 ⇒ x = 5',en:'(x-2)/6 = 1/2 ⇒ x = 5'} },
+{ q:{ar:'<strong>السؤال 10:</strong> المتوازيات تقطع قاطعاً بأجزاء (2y+1) و (y+4)، وآخر بأجزاء 3 و 2. جد y.',en:'<strong>Q10:</strong> Parallels cut one transversal into (2y+1) and (y+4), another into 3 and 2. Find y.'},
+  options:[{ar:'<span class="math-display">5</span>',en:'<span class="math-display">5</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'},{ar:'<span class="math-display">10</span>',en:'<span class="math-display">10</span>'}],
+  correct:3, answer:{ar:'(2y+1)/(y+4) = 3/2 ⇒ 4y + 2 = 3y + 12 ⇒ y = 10',en:'(2y+1)/(y+4) = 3/2 ⇒ y = 10'} }
+]},
+{ id:'s3', title:{ar:'🔹 القسم 3: قطعة المنتصف ونصف الضلع (Q11-Q15)',en:'🔹 Section 3: Midsegment & Half the Side (Q11-Q15)'}, questions:[
+{ q:{ar:'<strong>السؤال 11:</strong> مستقيم يمر بمنتصف AB ويوازي BC يقطع AC في جزأين 3x-4 و x+8. جد x.',en:'<strong>Q11:</strong> A line through the midpoint of AB parallel to BC cuts AC into 3x-4 and x+8. Find x.'},
+  svg: svgGraphs.midpoint_bisect,
+  options:[{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">4</span>',en:'<span class="math-display">4</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'}],
+  correct:0, answer:{ar:'ينصّف AC ⇒ الجزآن متطابقان: 3x - 4 = x + 8 ⇒ 2x = 12 ⇒ x = 6',en:'Bisects AC ⇒ 3x-4 = x+8 ⇒ x = 6'} },
+{ q:{ar:'<strong>السؤال 12:</strong> DE قطعة منتصف في مثلث: DE = 2x+1 و BC = 3x+9. جد x.',en:'<strong>Q12:</strong> DE is a midsegment: DE = 2x+1, BC = 3x+9. Find x.'},
+  svg: svgGraphs.midseg_fig,
+  options:[{ar:'<span class="math-display">5</span>',en:'<span class="math-display">5</span>'},{ar:'<span class="math-display">7</span>',en:'<span class="math-display">7</span>'},{ar:'<span class="math-display">9</span>',en:'<span class="math-display">9</span>'},{ar:'<span class="math-display">3</span>',en:'<span class="math-display">3</span>'}],
+  correct:1, answer:{ar:'DE = ½BC ⇒ 2(2x+1) = 3x+9 ⇒ 4x+2 = 3x+9 ⇒ x = 7',en:'2(2x+1) = 3x+9 ⇒ x = 7'} },
+{ q:{ar:'<strong>السؤال 13:</strong> مثلث أضلاعه 5 و 6 و 7. ما محيط مثلث المنتصفات (الذي رؤوسه منتصفات الأضلاع)؟',en:'<strong>Q13:</strong> Triangle sides 5, 6, 7. Perimeter of its midsegment triangle?'},
+  options:[{ar:'<span class="math-display">9</span>',en:'<span class="math-display">9</span>'},{ar:'<span class="math-display">18</span>',en:'<span class="math-display">18</span>'},{ar:'<span class="math-display">10.5</span>',en:'<span class="math-display">10.5</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'}],
+  correct:0, answer:{ar:'كل ضلع نصف المقابل: 2.5+3+3.5 = 9 (نصف المحيط 18)',en:'Each side halved: 2.5+3+3.5 = 9'} },
+{ q:{ar:'<strong>السؤال 14:</strong> قطعة منتصف توازي ضلعاً طوله 24 cm. ما طولها؟',en:'<strong>Q14:</strong> A midsegment parallel to a 24 cm side. Its length?'},
+  options:[{ar:'<span class="math-display">48</span>',en:'<span class="math-display">48</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'},{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">24</span>',en:'<span class="math-display">24</span>'}],
+  correct:1, answer:{ar:'قطعة المنتصف = نصف الضلع = 12 cm',en:'Midsegment = half = 12 cm'} },
+{ q:{ar:'<strong>السؤال 15:</strong> قطعة منتصف طولها 3.5 m. ما طول الضلع المقابل؟',en:'<strong>Q15:</strong> A midsegment is 3.5 m. Length of the parallel side?'},
+  options:[{ar:'<span class="math-display">3.5</span>',en:'<span class="math-display">3.5</span>'},{ar:'<span class="math-display">1.75</span>',en:'<span class="math-display">1.75</span>'},{ar:'<span class="math-display">7</span>',en:'<span class="math-display">7</span>'},{ar:'<span class="math-display">14</span>',en:'<span class="math-display">14</span>'}],
+  correct:2, answer:{ar:'الضلع = ضعف قطعة المنتصف = 7 m',en:'Side = twice = 7 m'} }
+]},
+{ id:'s4', title:{ar:'🔹 القسم 4: ثلاثة متوازيات وقاطعان (Q16-Q20)',en:'🔹 Section 4: Three Parallels & Two Transversals (Q16-Q20)'}, questions:[
+{ q:{ar:'<strong>السؤال 16:</strong> ثلاثة متوازيات تقطع قاطعاً بأجزاء 6 و 9، وآخر بأجزاء x و 12. جد x.',en:'<strong>Q16:</strong> Three parallels cut one transversal into 6 and 9, another into x and 12. Find x.'},
+  options:[{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'},{ar:'<span class="math-display">18</span>',en:'<span class="math-display">18</span>'},{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">9</span>',en:'<span class="math-display">9</span>'}],
+  correct:0, answer:{ar:'6/9 = x/12 ⇒ 9x = 72 ⇒ x = 8',en:'6/9 = x/12 ⇒ x = 8'} },
+{ q:{ar:'<strong>السؤال 17:</strong> ثلاثة متوازيات تقطع قاطعاً بأجزاء 4 و 10، وآخر بأجزاء 6 و y. جد y.',en:'<strong>Q17:</strong> Three parallels cut one transversal into 4 and 10, another into 6 and y. Find y.'},
+  options:[{ar:'<span class="math-display">10</span>',en:'<span class="math-display">10</span>'},{ar:'<span class="math-display">24</span>',en:'<span class="math-display">24</span>'},{ar:'<span class="math-display">15</span>',en:'<span class="math-display">15</span>'},{ar:'<span class="math-display">2.4</span>',en:'<span class="math-display">2.4</span>'}],
+  correct:2, answer:{ar:'4/10 = 6/y ⇒ 4y = 60 ⇒ y = 15',en:'4/10 = 6/y ⇒ y = 15'} },
+{ q:{ar:'<strong>السؤال 18:</strong> ثلاثة متوازيات تقطع قاطعاً بأجزاء x و x+3، وآخر بأجزاء 8 و 14. جد x.',en:'<strong>Q18:</strong> Three parallels cut one transversal into x and x+3, another into 8 and 14. Find x.'},
+  options:[{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">4</span>',en:'<span class="math-display">4</span>'},{ar:'<span class="math-display">3</span>',en:'<span class="math-display">3</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'}],
+  correct:1, answer:{ar:'x/(x+3) = 8/14 = 4/7 ⇒ 7x = 4x + 12 ⇒ x = 4',en:'x/(x+3) = 4/7 ⇒ x = 4'} },
+{ q:{ar:'<strong>السؤال 19:</strong> ثلاثة متوازيات تقطع قاطعاً بأجزاء 3 و 7، وآخر بأجزاء y-2 و y+6. جد y.',en:'<strong>Q19:</strong> Three parallels cut one transversal into 3 and 7, another into y-2 and y+6. Find y.'},
+  options:[{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">10</span>',en:'<span class="math-display">10</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'},{ar:'<span class="math-display">4</span>',en:'<span class="math-display">4</span>'}],
+  correct:2, answer:{ar:'3/7 = (y-2)/(y+6) ⇒ 3y+18 = 7y-14 ⇒ 32 = 4y ⇒ y = 8',en:'3/7 = (y-2)/(y+6) ⇒ y = 8'} },
+{ q:{ar:'<strong>السؤال 20:</strong> إذا قطعت ثلاثة متوازيات أجزاءً متطابقة على قاطع واحد، فماذا تقطع على أي قاطع آخر؟',en:'<strong>Q20:</strong> If three parallels cut congruent segments on one transversal, what do they cut on any other?'},
+  svg: svgGraphs.theorem_fig,
+  options:[{ar:'أجزاءً متناسبة فقط',en:'Only proportional parts'},{ar:'أجزاءً متطابقة',en:'Congruent parts'},{ar:'أجزاءً مضاعفة',en:'Double parts'},{ar:'أجزاءً عشوائية',en:'Random parts'}],
+  correct:1, answer:{ar:'نص النظرية: التطابق على قاطع واحد يستلزم التطابق على كل القواطع',en:'Theorem: congruence on one transversal forces congruence on all'} }
+]},
+{ id:'s5', title:{ar:'🔹 القسم 5: مفاهيم النظريات (Q21-Q25)',en:'🔹 Section 5: Theorem Concepts (Q21-Q25)'}, questions:[
+{ q:{ar:'<strong>السؤال 21:</strong> أي عبارة تمثل نظرية المستقيمات المتوازية والأجزاء المتناسبة؟',en:'<strong>Q21:</strong> Which states the theorem of parallels and proportional parts?'},
+  options:[{ar:'إذا قطعت متوازيات أجزاءً متطابقة على قاطع، قطعت أجزاءً متطابقة على كل القواطع',en:'If parallels cut congruent parts on one transversal, they do on all'},{ar:'المتوازيات لا تؤثر على القواطع',en:'Parallels do not affect transversals'},{ar:'كل قاطعين متطابقان',en:'Any two transversals are congruent'},{ar:'الأجزاء متناسبة مع زوايا القاطع',en:'Parts proportional to transversal angles'}],
+  correct:0, answer:{ar:'هذا نص النظرية كما في الصفحة',en:'This is the theorem statement'} },
+{ q:{ar:'<strong>السؤال 22:</strong> المستقيمات المتوازية تقطع أي قاطعين بأجزاء:',en:'<strong>Q22:</strong> Parallel lines cut any two transversals into parts that are:'},
+  options:[{ar:'متناسبة',en:'Proportional'},{ar:'متطابقة دائماً',en:'Always congruent'},{ar:'متعامدة',en:'Perpendicular'},{ar:'غير مرتبطة',en:'Unrelated'}],
+  correct:0, answer:{ar:'النسب بين الأجزاء المتقابلة متساوية دائماً',en:'Ratios of corresponding segments are always equal'} },
+{ q:{ar:'<strong>السؤال 23:</strong> قطعة المنتصف في المثلث:',en:'<strong>Q23:</strong> The midsegment of a triangle is:'},
+  options:[{ar:'تساوي الضلع الثالث',en:'Equal to the third side'},{ar:'توازي الضلع الثالث وتساوي نصفه',en:'Parallel to and half of the third side'},{ar:'ضعف الضلع الثالث',en:'Twice the third side'},{ar:'عمودية على الضلع الثالث',en:'Perpendicular to the third side'}],
+  correct:1, answer:{ar:'نظرية قطعة المنتصف: توازي وتساوي النصف',en:'Midsegment theorem: parallel and half'} },
+{ q:{ar:'<strong>السؤال 24:</strong> مستقيم يمر بمنتصف ضلع ويوازي ضلعاً ثانياً في المثلث فإنه:',en:'<strong>Q24:</strong> A line through the midpoint of one side parallel to a second side will:'},
+  options:[{ar:'ينصّف الضلع الثالث',en:'Bisect the third side'},{ar:'يضاعف الضلع الثالث',en:'Double the third side'},{ar:'يعامد الضلع الثالث',en:'Be perpendicular to the third side'},{ar:'لا يؤثر على الضلع الثالث',en:'Not affect the third side'}],
+  correct:0, answer:{ar:'نتيجة نظرية: يمر بمنتصف الضلع الثالث',en:'Corollary: it passes through the midpoint of the third side'} },
+{ q:{ar:'<strong>السؤال 25:</strong> متوازيات تقطع قاطعاً بأجزاء 2 و 4، وآخر بأجزاء 3 و z. جد z.',en:'<strong>Q25:</strong> Parallels cut one transversal into 2 and 4, another into 3 and z. Find z.'},
+  options:[{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'},{ar:'<span class="math-display">3</span>',en:'<span class="math-display">3</span>'},{ar:'<span class="math-display">6</span>',en:'<span class="math-display">6</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'}],
+  correct:2, answer:{ar:'2/4 = 3/z ⇒ 2z = 12 ⇒ z = 6',en:'2/4 = 3/z ⇒ z = 6'} }
+]},
+{ id:'s6', title:{ar:'🔹 القسم 6: مسائل مركبة (Q26-Q30)',en:'🔹 Section 6: Mixed Problems (Q26-Q30)'}, questions:[
+{ q:{ar:'<strong>السؤال 26:</strong> في شكل الأجزاء المتطابقة: <span class="math-display">(1/6)x + 2 = (2/3)x - 8</span> و <span class="math-display">3y - 7 = y + 5</span>. جد x و y.',en:'<strong>Q26:</strong> Congruent-parts figure: <span class="math-display">(1/6)x + 2 = (2/3)x - 8</span> and <span class="math-display">3y - 7 = y + 5</span>. Find x, y.'},
+  svg: triCutFig('f26b','مسألة مركبة: أجزاء متطابقة','(1/6)x + 2','(2/3)x - 8','3y - 7','y + 5','3y - 7 = y + 5  ⇒  2y = 12  ⇒  y = 6','(1/6)x + 2 = (2/3)x - 8  ⇒  10 = (1/2)x  ⇒  x = 20'),
+  options:[{ar:'<span class="math-display">x = 20 , y = 6</span>',en:'<span class="math-display">x = 20 , y = 6</span>'},{ar:'<span class="math-display">x = 6 , y = 20</span>',en:'<span class="math-display">x = 6 , y = 20</span>'},{ar:'<span class="math-display">x = 10 , y = 6</span>',en:'<span class="math-display">x = 10 , y = 6</span>'},{ar:'<span class="math-display">x = 20 , y = 3</span>',en:'<span class="math-display">x = 20 , y = 3</span>'}],
+  correct:0, answer:{ar:'10 = (1/2)x ⇒ x = 20 ؛ 2y = 12 ⇒ y = 6',en:'10 = x/2 ⇒ x=20; 2y=12 ⇒ y=6'} },
+{ q:{ar:'<strong>السؤال 27:</strong> قضيبا سكة حديد متوازيان والفلنكات تقطع أجزاءً متطابقة: <span class="math-display">2x + 6 = 3x - 4</span> و <span class="math-display">4y = y + 30</span>. جد x و y.',en:'<strong>Q27:</strong> Parallel rails with ties cutting congruent parts: <span class="math-display">2x + 6 = 3x - 4</span> and <span class="math-display">4y = y + 30</span>. Find x, y.'},
+  svg: threeLinesFig('f27b','الفلنكات تقطع أجزاءً متطابقة','2x + 6','3x - 4','4y','y + 30','4y = y + 30  ⇒  3y = 30  ⇒  y = 10','2x + 6 = 3x - 4  ⇒  x = 10'),
+  options:[{ar:'<span class="math-display">x = 2 , y = 10</span>',en:'<span class="math-display">x = 2 , y = 10</span>'},{ar:'<span class="math-display">x = 10 , y = 10</span>',en:'<span class="math-display">x = 10 , y = 10</span>'},{ar:'<span class="math-display">x = 10 , y = 30</span>',en:'<span class="math-display">x = 10 , y = 30</span>'},{ar:'<span class="math-display">x = 1 , y = 7.5</span>',en:'<span class="math-display">x = 1 , y = 7.5</span>'}],
+  correct:1, answer:{ar:'x = 10 و y = 10',en:'x = 10 and y = 10'} },
+{ q:{ar:'<strong>السؤال 28:</strong> في شكل الأجزاء المتطابقة: <span class="math-display">5x - 8 = 3x + 4</span> و <span class="math-display">(1/2)y + 3 = (1/3)y + 6</span>. جد x و y.',en:'<strong>Q28:</strong> Congruent-parts figure: <span class="math-display">5x - 8 = 3x + 4</span> and <span class="math-display">(1/2)y + 3 = (1/3)y + 6</span>. Find x, y.'},
+  options:[{ar:'<span class="math-display">x = 18 , y = 6</span>',en:'<span class="math-display">x = 18 , y = 6</span>'},{ar:'<span class="math-display">x = 6 , y = 9</span>',en:'<span class="math-display">x = 6 , y = 9</span>'},{ar:'<span class="math-display">x = 12 , y = 18</span>',en:'<span class="math-display">x = 12 , y = 18</span>'},{ar:'<span class="math-display">x = 6 , y = 18</span>',en:'<span class="math-display">x = 6 , y = 18</span>'}],
+  correct:3, answer:{ar:'2x = 12 ⇒ x = 6 ؛ (1/6)y = 3 ⇒ y = 18',en:'2x=12 ⇒ x=6; y/6=3 ⇒ y=18'} },
+{ q:{ar:'<strong>السؤال 29:</strong> متوازيات تقطع قاطعاً بأجزاء x+1 و x+4، وآخر بنسبة 2:3. وإذا كان <span class="math-display">(y-3)/6 = 1/2</span> فجد x و y.',en:'<strong>Q29:</strong> Parallels cut one transversal into x+1 and x+4 with ratio 2:3 on the other; and <span class="math-display">(y-3)/6 = 1/2</span>. Find x, y.'},
+  options:[{ar:'<span class="math-display">x = 5 , y = 6</span>',en:'<span class="math-display">x = 5 , y = 6</span>'},{ar:'<span class="math-display">x = 6 , y = 5</span>',en:'<span class="math-display">x = 6 , y = 5</span>'},{ar:'<span class="math-display">x = 5 , y = 9</span>',en:'<span class="math-display">x = 5 , y = 9</span>'},{ar:'<span class="math-display">x = 3 , y = 6</span>',en:'<span class="math-display">x = 3 , y = 6</span>'}],
+  correct:0, answer:{ar:'(x+1)/(x+4) = 2/3 ⇒ 3x+3 = 2x+8 ⇒ x = 5 ؛ y - 3 = 3 ⇒ y = 6',en:'(x+1)/(x+4)=2/3 ⇒ x=5; y-3=3 ⇒ y=6'} },
+{ q:{ar:'<strong>السؤال 30:</strong> ثلاثة متوازيات متباعدة بالتساوي تقطع قاطعاً بأجزاء متطاقة، وتقطع قاطعاً آخر بأجزاء 2x-5 و x+3. جد x.',en:'<strong>Q30:</strong> Three equally spaced parallels cut one transversal into congruent parts and another into 2x-5 and x+3. Find x.'},
+  options:[{ar:'<span class="math-display">2</span>',en:'<span class="math-display">2</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'},{ar:'<span class="math-display">5</span>',en:'<span class="math-display">5</span>'},{ar:'<span class="math-display">3</span>',en:'<span class="math-display">3</span>'}],
+  correct:1, answer:{ar:'التباعد المتساوي ⇒ أجزاء متطابقة على كل قاطع: 2x - 5 = x + 3 ⇒ x = 8',en:'Equal spacing ⇒ congruent on all: 2x-5 = x+3 ⇒ x = 8'} }
+]}
+]};
+
+function shuffleArray(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+function prepareShuffledExam(){rng=mulberry32(currentSeed);examData=JSON.parse(JSON.stringify(originalExamData));correctAnswersMap={};let g=0;examData.sections.forEach(s=>{s.questions=shuffleArray(s.questions);s.questions.forEach(q=>{const oc=q.options.map((o,i)=>({option:o,isCorrect:i===q.correct}));const sh=shuffleArray(oc);q.options=sh.map(o=>o.option);q.correct=sh.findIndex(o=>o.isCorrect);correctAnswersMap[g]=String.fromCharCode(97+q.correct);g++})})}
+function reshuffleExam(){if(confirm(currentLang==='ar'?'🔄 سيتم إنشاء أسئلة جديدة ومسح إجاباتك. هل أنت متأكد؟':'🔄 New questions will be generated. Are you sure?')){currentSeed=Date.now();timeRemaining=TOTAL_TIME;answersVisible=false;prepareShuffledExam();renderExam();saveState();alert(currentLang==='ar'?'🎲 تم تغيير الأسئلة! حظاً موفقاً! 🍀':'🎲 Questions changed! Good luck! 🍀');window.scrollTo({top:0,behavior:'smooth'})}}
+function setLanguage(lang){currentLang=lang;document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.getElementById('btn-ar').classList.toggle('active',lang==='ar');document.getElementById('btn-en').classList.toggle('active',lang==='en');document.body.classList.toggle('en-mode',lang==='en');document.querySelectorAll('[data-ar]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)});document.querySelectorAll('[data-placeholder-ar]').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+lang)});renderExam();saveState(false)}
+function renderExam(){const container=document.getElementById('exam-content');const lbl={option:['a)','b)','c)','d)'],answer:currentLang==='ar'?'✅ الإجابة:':'✅ Answer:'};let html='',g=0;
+examData.sections.forEach((section,si)=>{const bc=['module-1','module-2','module-3','module-4','module-5','module-6'][si];html+='<section class="bg-white p-6 rounded-2xl shadow-lg border-2 border-cyan-100"><div class="text-center mb-4"><span class="module-badge '+bc+'">'+section.title[currentLang]+'</span></div><ol class="space-y-4 text-sm">';
+section.questions.forEach(q=>{html+='<li class="border-r-4 border-cyan-400 pr-4 py-2" id="q-'+g+'" style="border-right:4px solid #0891b2;padding-right:1rem;"><strong class="text-cyan-700">'+(g+1)+'.</strong> '+q.q[currentLang]+'<br>';
+if(q.svg)html+='<div class="graph-container">'+q.svg+'</div>';
+q.options.forEach((opt,oi)=>{html+='<label class="cursor-pointer block mt-2 mr-4 hover:bg-cyan-50 rounded-lg p-2 transition" style="margin-right:1rem;"><input type="radio" name="q'+g+'" value="'+String.fromCharCode(97+oi)+'" class="mr-2 ml-2"><span class="arabic-math">'+lbl.option[oi]+' '+opt[currentLang]+'</span></label>'});
+html+='<div class="answer-box text-green-700 mt-3 font-medium '+(answersVisible?'':'hidden')+' bg-green-50 rounded-lg p-3 border border-green-200">'+lbl.answer+' '+lbl.option[q.correct]+' <span class="arabic-math">'+q.options[q.correct][currentLang]+'</span><br><span class="text-sm text-green-700 mt-2 block arabic-math">'+q.answer[currentLang]+'</span></div></li>';g++});
+html+='</ol></section>'});
+container.innerHTML=html}
+function startTimer(){updateTimerDisplay();timerInterval=setInterval(()=>{timeRemaining--;updateTimerDisplay();if(timeRemaining%60===0)saveState(false);if(timeRemaining<=600)document.getElementById('timer').classList.add('timer-warning');if(timeRemaining<=0){clearInterval(timerInterval);alert(currentLang==='ar'?'⏰ انتهى الوقت!':"⏰ Time's up!");gradeExam()}},1000)}
+function updateTimerDisplay(){const m=Math.floor(timeRemaining/60),s=timeRemaining%60;document.getElementById('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function toggleAnswers(){answersVisible=!answersVisible;document.querySelectorAll('.answer-box').forEach(el=>el.classList.toggle('hidden',!answersVisible));saveState(false)}
+function gradeExam(){let cc=0;const ss=new Array(TOTAL_SECTIONS).fill(0);
+for(let i=0;i<TOTAL_QUESTIONS;i++){const sel=document.querySelector('input[name="q'+i+'"]:checked');const li=document.getElementById('q-'+i);if(li){const ok=sel&&sel.value===correctAnswersMap[i];if(ok){cc++;li.classList.add('correct');li.classList.remove('incorrect');ss[Math.floor(i/QUESTIONS_PER_SECTION)]++}else{li.classList.add('incorrect');li.classList.remove('correct')}}}
+const score=Math.round(cc/TOTAL_QUESTIONS*100);document.getElementById('res-total').textContent=score+' / 100';document.getElementById('res-name').textContent=document.getElementById('studentName').value||(currentLang==='ar'?'بطل':'Champion');document.getElementById('res-date').textContent=new Date().toLocaleDateString(currentLang==='ar'?'ar-AE':'en-US');
+const pc=document.getElementById('sections-performance');pc.innerHTML='';examData.sections.forEach((s,i)=>{pc.innerHTML+='<div class="flex justify-between items-center p-3 bg-white rounded-lg"><span class="text-gray-700">'+s.title[currentLang]+'</span><span class="font-bold text-cyan-700">'+ss[i]+'/'+QUESTIONS_PER_SECTION+'</span></div>'});
+const badge=document.getElementById('success-badge');document.getElementById('success-percent').textContent=score+'%';
+if(currentLang==='ar'){if(score>=90){badge.textContent='🌟 ممتاز جداً!';badge.className='success-badge grade-excellent'}else if(score>=75){badge.textContent='👏 ممتاز!';badge.className='success-badge grade-good'}else if(score>=50){badge.textContent='👍 جيد';badge.className='success-badge grade-pass'}else{badge.textContent='💪 حاول مرة أخرى';badge.className='success-badge grade-fail'}}
+else{if(score>=90){badge.textContent='🌟 Outstanding!';badge.className='success-badge grade-excellent'}else if(score>=75){badge.textContent='👏 Excellent!';badge.className='success-badge grade-good'}else if(score>=50){badge.textContent='👍 Good';badge.className='success-badge grade-pass'}else{badge.textContent='💪 Try Again';badge.className='success-badge grade-fail'}}
+document.getElementById('results-panel').classList.remove('hidden');document.getElementById('results-panel').scrollIntoView({behavior:'smooth'});if(timerInterval)clearInterval(timerInterval)}
+function sendResultsToEmail(){const btn=document.getElementById('sendEmailBtn'),status=document.getElementById('emailStatus');btn.disabled=true;btn.textContent=currentLang==='ar'?'⏳ جاري الإرسال...':'⏳ Sending...';
+const name=document.getElementById('studentName').value||'N/A',klass=document.getElementById('studentClass').value||'N/A',date=document.getElementById('examDate').value||new Date().toLocaleDateString(),score=document.getElementById('res-total').textContent,rate=document.getElementById('success-percent').textContent,badge=document.getElementById('success-badge').textContent;
+let qh='<div style="font-family:Arial;direction:rtl"><h2>📐 '+(currentLang==='ar'?'نتيجة امتحان تناسب أجزاء المثلث - رياضيات 11 عام':'Proportional Parts Exam Result - Grade 11')+'</h2><p><b>الاسم:</b> '+name+'</p><p><b>الشعبة:</b> '+klass+'</p><p><b>التاريخ:</b> '+date+'</p><p><b>الدرجة:</b> '+score+' ('+rate+')</p><p><b>التقدير:</b> '+badge+'</p><hr><table style="width:100%;border-collapse:collapse"><tr style="background:#0891b2;color:white"><th style="padding:8px;border:1px solid #ddd">#</th><th style="padding:8px;border:1px solid #ddd">السؤال</th><th style="padding:8px;border:1px solid #ddd">إجابة الطالب</th><th style="padding:8px;border:1px solid #ddd">الصحيحة</th><th style="padding:8px;border:1px solid #ddd">النتيجة</th></tr>';
+let g=0;examData.sections.forEach(sec=>{qh+='<tr style="background:#cffafe"><td colspan="5" style="padding:8px;font-weight:bold;border:1px solid #ddd">'+sec.title.ar+'</td></tr>';sec.questions.forEach(q=>{const sel=document.querySelector('input[name="q'+g+'"]:checked');const sv=sel?sel.value:null;const cv=correctAnswersMap[g];const ic=sv===cv;let sat=sv?q.options[sv.charCodeAt(0)-97][currentLang]:(currentLang==='ar'?'❌ لم يجب':'❌ No answer');const sac=ic?'#16a34a':'#dc2626';const cat=q.options[q.correct][currentLang];const rb=ic?'#f0fdf4':'#fef2f2';qh+='<tr style="background:'+rb+'"><td style="padding:8px;border:1px solid #ddd;text-align:center">'+(g+1)+'</td><td style="padding:8px;border:1px solid #ddd">'+q.q.ar.replace(/<[^>]+>/g,'').substring(0,70)+'...</td><td style="padding:8px;border:1px solid #ddd;color:'+sac+'">'+sat+'</td><td style="padding:8px;border:1px solid #ddd;color:#16a34a">'+cat+'</td><td style="padding:8px;border:1px solid #ddd;text-align:center">'+(ic?'✅':'❌')+'</td></tr>';g++})});
+qh+='</table></div>';
+emailjs.send(SERVICE_ID,TEMPLATE_ID,{to_email:TARGET_EMAIL,student_name:name,student_class:klass,exam_date:date,total_score:score,success_rate:rate,grade:badge,answers_table:qh})
+.then(()=>{status.textContent=currentLang==='ar'?'✅ تم الإرسال بنجاح!':'✅ Sent successfully!';status.style.color='#16a34a';btn.textContent=currentLang==='ar'?'✓ تم':'✓ Sent';alert(currentLang==='ar'?'تم إرسال النتيجة للمعلم بنجاح!':'Result sent to teacher successfully!')})
+.catch(err=>{status.textContent=currentLang==='ar'?'❌ فشل الإرسال':'❌ Failed';status.style.color='#dc2626';btn.disabled=false;btn.textContent=currentLang==='ar'?'📧 حاول مرة أخرى':'📧 Try Again'});}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const saved=loadState();
+  if(saved&&saved.seed){currentSeed=saved.seed;currentLang=saved.lang||'ar';timeRemaining=saved.timeRemaining!==undefined?saved.timeRemaining:TOTAL_TIME;answersVisible=saved.answersVisible||false}else{currentSeed=Date.now()}
+  document.getElementById('btn-ar').classList.toggle('active',currentLang==='ar');
+  document.getElementById('btn-en').classList.toggle('active',currentLang==='en');
+  document.body.classList.toggle('en-mode',currentLang==='en');
+  document.documentElement.lang=currentLang;document.documentElement.dir=currentLang==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-ar]').forEach(el=>{el.textContent=el.getAttribute('data-'+currentLang)});
+  document.querySelectorAll('[data-placeholder-ar]').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+currentLang)});
+  prepareShuffledExam();renderExam();
+  if(saved){if(saved.studentName)document.getElementById('studentName').value=saved.studentName;if(saved.studentClass)document.getElementById('studentClass').value=saved.studentClass;if(saved.examDate)document.getElementById('examDate').value=saved.examDate;if(saved.answers)restoreAnswers(saved.answers)}
+  setupAnswerListeners();setupInputListeners();
+  document.getElementById('method-holder').innerHTML=svgGraphs.theorem_fig;
+  startTimer();
+});
+window.addEventListener('beforeunload',()=>saveState(false));
+</script>
+</body>
+</html>
